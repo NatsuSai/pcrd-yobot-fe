@@ -50,24 +50,16 @@ export default {
   mounted() {
     axios
       .all([
-        axios.get("./api/"),
-        axios.post("../api/", {
-          action: "get_member_list",
-          csrf_token: window.csrf_token,
-        }),
+        axios.get("http://212.64.38.32:9222/yobot/clan/737974222/statistics/api/?apikey=zcuOlwOhHLBCvh6s"),
       ])
       .then(
-        axios.spread((resData, resUser) => {
-          if (resData.data.code != 0) {
+        axios.spread((resData) => {
+          if (resData.data.code !== 0) {
             this.$alert(resData.data.message, "获取记录失败");
             return;
           }
-          if (resUser.data.code != 0) {
-            this.$alert(resUser.data.message, "获取成员失败");
-            return;
-          }
           this.originData = resData.data.challenges;
-          this.originUserData = resUser.data.members;
+          this.originUserData = resData.data.members;
         })
       );
   },

@@ -18,6 +18,13 @@
           }}</a>
         </template>
       </el-table-column>
+      <el-table-column prop="score" label="总分数" sortable>
+        <template v-if="scope.row" slot-scope="scope">
+          <a :class="'digit' + scope.row.score.toString().length">{{
+              scope.row.score
+            }}</a>
+        </template>
+      </el-table-column>
       <el-table-column prop="total" label="总出刀数" sortable></el-table-column>
       <el-table-column prop="totalNotRemain" label="总出刀数（不包含剩余刀）" sortable width="220"></el-table-column>
       <el-table-column
@@ -36,13 +43,20 @@
     </el-table>
     <el-dialog title="伤害详情" :visible.sync="dialogTableVisible">
       <el-table :data="gridData">
-        <el-table-column prop="cycle" label="周目"></el-table-column>
-        <el-table-column prop="boss_num" label="BOSS顺位"></el-table-column>
-        <el-table-column label="刀伤害">
+        <el-table-column prop="item.cycle" label="周目"></el-table-column>
+        <el-table-column prop="item.boss_num" label="BOSS顺位"></el-table-column>
+        <el-table-column prop="score" label="分数" sortable>
           <template v-if="scope.row" slot-scope="scope">
-            <span v-html="csummary(scope.row)"></span>
+            <a :class="'digit' + scope.row.score.toString().length">{{
+                scope.row.score
+              }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column label="刀伤害">
+          <template v-if="scope.row.item" slot-scope="scope">
+            <span v-html="csummary(scope.row.item)"></span>
             <el-popover placement="top" effect="light" trigger="hover">
-              {{ cdetail(scope.row) }}
+              {{ cdetail(scope.row.item) }}
               <i class="el-icon-info" slot="reference"></i>
             </el-popover>
           </template>
@@ -70,6 +84,7 @@ export default {
       this.originUserData.forEach((item) => {
         data[item.qqid] = {
           nickname: item.nickname,
+          score: 0,
           damage: 0,
           damageDetail: [],
         };
@@ -79,7 +94,53 @@ export default {
         .forEach((item) => {
           const { qqid, damage } = item;
           data[qqid].damage += damage;
-          data[qqid].damageDetail.push(item);
+          if (item.cycle < 4) {
+            switch (item.boss_num) {
+              case 1:
+              case 2:
+                data[qqid].score += Math.ceil(damage);
+                break;
+              case 3:
+              case 4:
+                data[qqid].score += Math.ceil(damage*1.1);
+                break;
+              case 5:
+                data[qqid].score += Math.ceil(damage*1.2);
+                break;
+            }
+          } else if (item.cycle < 11) {
+            switch (item.boss_num) {
+              case 1:
+              case 2:
+                data[qqid].score += Math.ceil(damage*1.2);
+                break;
+              case 3:
+                data[qqid].score += Math.ceil(damage*1.5);
+                break;
+              case 4:
+                data[qqid].score += Math.ceil(damage*1.7);
+                break;
+              case 5:
+                data[qqid].score += Math.ceil(damage*2.0);
+                break;
+            }
+          } else if (item.cycle < 35){
+            switch (item.boss_num) {
+              case 1:
+              case 2:
+                data[qqid].score += Math.ceil(damage*2);
+                break;
+              case 3:
+              case 4:
+                data[qqid].score += Math.ceil(damage*2.4);
+                break;
+              case 5:
+                data[qqid].score += Math.ceil(damage*2.6);
+                break;
+            }
+          }
+          const score = data[qqid].score;
+          data[qqid].damageDetail.push({item, score});
         });
       Object.values(data).forEach((item) => {
         const count = this.count(item.damageDetail);

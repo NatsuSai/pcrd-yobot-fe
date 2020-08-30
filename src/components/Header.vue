@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-page-header @back="location = '..'" content="统计"></el-page-header>
+<!--    <el-page-header @back="location = '..'" content="统计"></el-page-header>-->
     <el-menu
       :default-active="activeIndex"
       class="el-menu-demo"
