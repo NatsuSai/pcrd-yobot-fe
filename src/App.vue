@@ -48,9 +48,13 @@ export default {
     };
   },
   mounted() {
+    let apiUrl = window.localStorage.getItem('API_URL');
+    if (apiUrl === '' || apiUrl === null) {
+      apiUrl = 'http://212.64.38.32:9222/yobot/clan/737974222/statistics/api/?apikey=zcuOlwOhHLBCvh6s';
+    }
     axios
       .all([
-        axios.get("http://212.64.38.32:9222/yobot/clan/737974222/statistics/api/?apikey=zcuOlwOhHLBCvh6s"),
+        axios.get(apiUrl),
       ])
       .then(
         axios.spread((resData) => {

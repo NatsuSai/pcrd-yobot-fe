@@ -1,6 +1,8 @@
 <template>
   <div>
 <!--    <el-page-header @back="location = '..'" content="统计"></el-page-header>-->
+    <el-input id="apiUrl" @change="handleApiUrlChange" value="http://212.64.38.32:9222/yobot/clan/737974222/statistics/api/?apikey=zcuOlwOhHLBCvh6s" />
+    <el-button @click="handleEdit">查询</el-button>
     <el-menu
       :default-active="activeIndex"
       class="el-menu-demo"
@@ -21,9 +23,19 @@ export default {
   data() {
     return {
       activeIndex: "4",
+      apiUrl: null
     };
   },
   methods: {
+    handleEdit() {
+      window.localStorage.setItem('API_URL', this.apiUrl);
+      window.reload();
+    },
+
+    handleApiUrlChange(e) {
+      e.preventDefault();
+      this.apiUrl = e.target.value;
+    },
     handleTitleSelect(key) {
       switch (key) {
         case "1":

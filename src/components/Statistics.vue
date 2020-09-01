@@ -115,7 +115,7 @@ export default {
                 data[qqid].score += Math.ceil(damage*1.2);
                 break;
               case 3:
-                data[qqid].score += Math.ceil(damage*1.5);
+                data[qqid].score += Math.ceil(damage*1.7);
                 break;
               case 4:
                 data[qqid].score += Math.ceil(damage*1.7);
