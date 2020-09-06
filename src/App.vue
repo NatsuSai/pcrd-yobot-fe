@@ -16,12 +16,16 @@
           :originData="originData"
           :originUserData="originUserData"
         />
+        <Chieru
+          v-else-if="activeMenu === 'chieru'"
+        />
         <template v-else>
           <h2>建设中</h2>
         </template>
       </article>
     </section>
   </div>
+
 </template>
 
 <script>
@@ -31,6 +35,7 @@ import Header from "./components/Header";
 import SideMenu from "./components/SideMenu";
 import Statistics from "./components/Statistics";
 import ByCycle from "./components/ByCycle";
+import Chieru from "./components/Chieru_go";
 
 export default {
   name: "App",
@@ -39,6 +44,7 @@ export default {
     SideMenu,
     Statistics,
     ByCycle,
+    Chieru,
   },
   data() {
     return {

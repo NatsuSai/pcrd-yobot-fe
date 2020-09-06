@@ -14,6 +14,7 @@
       <el-menu-item index="3">查刀</el-menu-item>
       <el-menu-item index="4">统计</el-menu-item>
       <el-menu-item index="5">我的</el-menu-item>
+      <el-menu-item index="6">切噜语</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -52,6 +53,9 @@ export default {
           break;
         case "5":
           window.location = `../my/`;
+          break;
+        case "6":
+          window.location = `/Chieru`;
           break;
         default:
           break;
